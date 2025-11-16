@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Facts</h2>
+    <a href="{{ url_for('facts_new') }}" class="btn-primary btn">New Facts</a>
+
+</div>
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Values</th>
+            <th>Tags</th>
+            <th style="width: 160px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in facts %}
+        <tr>
+            <td><code>{{ f.id }}</code></td>
+            <td>{{ f.description }}</td>
+            <td>
+                {% if f.value %}
+                    <span class="badge text-bg-success">true</span>
+                {% else %}
+                    <span class="badge text-bg-secondary">false</span>
+                {% endif %}
+            </td>
+            <td>{{ f.tags | join(', ') }}</td>
+            <td class="text-end">
+                <a href="{{ url_for('facts_edit', fid=f.id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <form action="{{ url_for('facts_delete', fid=f.id) }}" method="post" onsubmit="return confirm('Delete fact {{ f.id }}?')" class="d-inline">
+                    <button class="btn-outline-danger btn btn-sm">Delete</button>
+                </form>
+
+            </td>
+        </tr>
+        {% else %}
+        <tr><td cosplan="5">No facts yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
